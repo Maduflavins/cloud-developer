@@ -18,14 +18,41 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+// router.get('/:id', requireAuth,
+//     async (req: Request, res: Response) =>{
+//         let{ id } = req.params;
+//         if(!id){
+//             res.send(400).send("id requires")
+//         }else{
+//             const item = await FeedItem.findByPk(id)
+//             if(!item){
+//                 res.status(404).send({message: "item with that id does not exist"})
+//             }else{
+//                 item.id = AWS.getGetSignedUrl(id)
+//                 res.status(200).send(item)
+//             }
+//         }
+//     }
+// )
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
-    async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
-});
+// router.patch('/:id', 
+//     requireAuth, 
+//     async (req: Request, res: Response) => {
+//         //@TODO try it yourself
+//         let { id } = req.params;
+//         const new_caption = req.body.caption;
+//         const new_fileName = req.body.url;
+//         const item = await FeedItem.findByPk(id)
+//         if(item.id != id){
+//             res.status(404).send({message: "item with such id does not exist"})
+//         }else{
+//             item.caption = new_caption;
+//             item.url = new_fileName;
+//             res.status(200).send(item)
+//         }
+//         res.send(500).send("not implemented")
+// });
 
 
 // Get a signed url to put a new item in the bucket
