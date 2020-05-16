@@ -15,7 +15,55 @@ exports.handler = async (event) => {
   let requestWasSuccessful
 
   const startTime = timeInMs()
-  await axios.get(url)
+  try {
+    await axios.get(url)
+    requestWasSuccessful = true
+    
+  } catch (error) {
+    requestWasSuccessful = false
+    
+  } finally{
+    endTime = timeInMs()
+  }
+
+  const totalTime = endTime - startTime
+
+  await cloudwatch.putMetricData({
+    MetricData: [
+      {
+        MetricName: 'Success',
+        Dimensions: [
+          {
+            Name: 'ServiceName',
+            Value: serviceName
+
+          }
+        ],
+        Unit: 'Count',
+        Value: requestWasSuccessful ? 1: 0
+      }
+
+    ],
+    Namespace: 'Udacity/Serveless'
+  }).promise()
+
+  await cloudwatch.putMetricData({
+    MetricData: [
+      {
+        MetricName: 'Latency',
+        Dimensions: [
+          {
+            Name: 'ServiceName',
+            Value: serviceName
+          }
+        ],
+        Unit: 'Milliseconds',
+        Value: totalTime
+      }
+    ],
+    Namespace: 'Udacity/Severless'
+  }).promise()
+ 
 
   // Example of how to write a single data point
   // await cloudwatch.putMetricData({
